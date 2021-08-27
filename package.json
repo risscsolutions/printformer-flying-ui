@@ -2,9 +2,10 @@
   "name": "flying-ui",
   "version": "1.0.0",
   "description": "Flying UI for Printformer",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
-    "build": "webpack"
+    "prod": "webpack --env production",
+    "dev": "webpack --watch --env development"
   },
   "author": "",
   "license": "ISC",

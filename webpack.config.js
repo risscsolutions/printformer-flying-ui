@@ -39,81 +39,80 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
-    mode: process.env.BUILD_MODE,
-    entry: './src/index.tsx',
-
-    plugins: [
-        new Dotenv(),
-        new webpack.ProgressPlugin(),
-        new MiniCssExtractPlugin({filename: 'main.[chunkhash].css'}),
-        new HtmlWebpackPlugin({
-            title: 'Printformer Flying UI',
-            // Load a custom template (lodash by default)
-            template: 'src/index.html'
-        })
-    ],
-
-    module: {
-        rules: [{
-            test: /\.(ts|tsx)$/,
-            loader: 'ts-loader',
-            include: [path.resolve(__dirname, 'src')],
-            exclude: [/node_modules/]
-        }, {
-            test: /.(scss|css)$/,
-
-            use: [{
-                loader: MiniCssExtractPlugin.loader
+module.exports = (env) => {
+    return {
+        mode: env.production ? 'production' : 'development',
+        entry: './src/index.tsx',
+        plugins: [
+            new Dotenv(),
+            new webpack.ProgressPlugin(),
+            new MiniCssExtractPlugin({filename: 'main.[chunkhash].css'}),
+            new HtmlWebpackPlugin({
+                title: 'Printformer Flying UI',
+                // Load a custom template (lodash by default)
+                template: 'src/index.html'
+            }),
+            new webpack.EnvironmentPlugin({
+                NODE_ENV: env.production ? 'production' : 'development',
+            })
+        ],
+        module: {
+            rules: [{
+                test: /\.(ts|tsx)$/,
+                loader: 'ts-loader',
+                include: [path.resolve(__dirname, 'src')],
+                exclude: [/node_modules/]
             }, {
-                loader: "style-loader"
-            }, {
-                loader: "css-loader",
+                test: /.(scss|css)$/,
 
-                options: {
-                    sourceMap: true
-                }
-            }, {
-                loader: "sass-loader",
+                use: [{
+                    loader: MiniCssExtractPlugin.loader
+                }, {
+                    loader: "style-loader"
+                }, {
+                    loader: "css-loader",
 
-                options: {
-                    sourceMap: true
-                }
+                    options: {
+                        sourceMap: true
+                    }
+                }, {
+                    loader: "sass-loader",
+
+                    options: {
+                        sourceMap: true
+                    }
+                }]
             }]
-        }]
-    },
-
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-        fallback: {
-            "fs": false,
-            "tls": false,
-            "net": false,
-            "path": false,
-            "zlib": false,
-            "http": false,
-            "https": false,
-            "stream": false,
-            "crypto": false,
-            "crypto-browserify": require.resolve('crypto-browserify')
-        }
-    },
-
-    optimization: {
-        minimizer: [new TerserPlugin()],
-
-        splitChunks: {
-            cacheGroups: {
-                vendors: {
-                    priority: -10,
-                    test: /[\\/]node_modules[\\/]/
-                }
-            },
-
-            chunks: 'async',
-            minChunks: 1,
-            minSize: 30000,
-            name: false
+        },
+        resolve: {
+            extensions: ['.tsx', '.ts', '.js'],
+            fallback: {
+                "fs": false,
+                "tls": false,
+                "net": false,
+                "path": false,
+                "zlib": false,
+                "http": false,
+                "https": false,
+                "stream": false,
+                "crypto": false,
+                "crypto-browserify": require.resolve('crypto-browserify')
+            }
+        },
+        optimization: {
+            minimizer: [new TerserPlugin()],
+            splitChunks: {
+                cacheGroups: {
+                    vendors: {
+                        priority: -10,
+                        test: /[\\/]node_modules[\\/]/
+                    }
+                },
+                chunks: 'async',
+                minChunks: 1,
+                minSize: 30000,
+                name: false
+            }
         }
     }
 }

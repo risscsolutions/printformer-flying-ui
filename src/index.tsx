@@ -19,11 +19,17 @@ const query: { [key: string]: string } = location.search.substring(1)
         return acc;
     }, {});
 
-let url = `${process.env.PRINTFORMER_URL}/editor/${query['draft']}/embed`;
+let url;
+if (process.env.NODE_ENV === 'development') {
+    url = `${process.env.PRINTFORMER_URL}/editor/${query['draft']}/embed`;
+} else {
+    url = `${window.location.origin}/editor/${query['draft']}/embed`;
+}
 
 if (query['api_token']) {
     url += `?api_token=${query['api_token']}`
 }
+
 editorIframe.src = url;
 
 // @ts-ignore

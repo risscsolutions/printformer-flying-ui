@@ -42,6 +42,7 @@ export class AssetMenu extends GenericMenu<ReceivesEditorObject, AssetMenuState>
                                         cursor: "pointer",
                                     }}
                                     type="file"
+                                    accept="image/*"
                                     onChange={async (e) => await this.setFile(e)}/>
                             </Button>
                         </Tooltip>
