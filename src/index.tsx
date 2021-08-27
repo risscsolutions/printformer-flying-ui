@@ -4,6 +4,25 @@ import EventEmitter from 'eventemitter3';
 import EditorClient from "@rissc/printformer-editor-client/dist/EditorClient";
 import Connector from "@rissc/printformer-editor-client/dist/Connector";
 import App from "./App";
+// @ts-ignore
+import {createTheme} from "@material-ui/core";
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            light: '#757ce8',
+            main: '#3f50b5',
+            dark: '#002884',
+            contrastText: '#fff',
+        },
+        secondary: {
+            light: '#ff7961',
+            main: '#f44336',
+            dark: '#ba000d',
+            contrastText: '#000',
+        }
+    }
+});
 
 // @ts-ignore
 window.events = new EventEmitter();
@@ -35,5 +54,5 @@ editorIframe.src = url;
 // @ts-ignore
 connector.connect(editorIframe, window.events)
     .then((editor: EditorClient) => {
-        ReactDOM.render(<App draft={query['draft']} editor={editor}/>, document.querySelector('#app'));
+        ReactDOM.render(<App theme={theme} draft={query['draft']} editor={editor}/>, document.querySelector('#app'));
     });

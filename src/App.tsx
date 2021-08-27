@@ -7,7 +7,7 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow,
+    TableRow, Theme,
 } from "@material-ui/core";
 
 import Fab from "@material-ui/core/Fab";
@@ -20,6 +20,7 @@ import {BlockMenu} from "./Components/BlockMenu";
 import {ElementInformation} from "./Components/ElementInformation";
 import {Settings} from "./Components/Settings";
 import {KeyboardShortcut} from "@rissc/printformer-editor-client/dist/Objects";
+import { ThemeProvider } from '@material-ui/styles';
 
 type AppState = {
     openHelp: boolean,
@@ -28,7 +29,7 @@ type AppState = {
     editorConfiguration: any,
 }
 
-type AppProps = Props & { draft: string };
+type AppProps = Props & { draft: string, theme: Theme };
 
 class App extends Component<AppProps, AppState> {
 
@@ -82,7 +83,7 @@ class App extends Component<AppProps, AppState> {
 
     public render() {
         return (
-            <div>
+            <ThemeProvider theme={this.props.theme}>
                 <ContextMenu editor={this.props.editor}/>
                 <BlockMenu editor={this.props.editor}/>
                 <Fab color="primary"
@@ -196,7 +197,7 @@ class App extends Component<AppProps, AppState> {
                             onClose={() => this.removeMessage(message)}/>
                     )
                 })}
-            </div>
+            </ThemeProvider>
         );
     }
 
